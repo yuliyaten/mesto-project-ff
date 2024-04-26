@@ -1,5 +1,5 @@
 import { initialCards } from './cards.js';
-import { closePopup, openPopup} from './modal.js';
+import { closePopup, openPopup, closePopupByOverlay, closePopupByEsc} from './modal.js';
 import { createCard, deleteCard, likeCard } from './card.js';
 
 // @todo: DOM узлы
@@ -19,14 +19,14 @@ function openImageCard(imageUrl, imageAlt) {
   openPopup(popupImage);
 }
 
-function getCard(card, deleteCard) {
+function addCard(card, deleteCard) {
  const cardElement = createCard(card, deleteCard, likeCard, openImageCard);
  placesList.append(cardElement);
 }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach(card => {
-  getCard(card, deleteCard);
+  addCard(card, deleteCard);
 });
 
 // открытие модального окна для редактирования профиля
@@ -40,6 +40,8 @@ const addButton = document.querySelector('.profile__add-button');
 // слушатель на открытие профиля
 editProfileButton.addEventListener('click', () => {
  openPopup(editProfilePopup);
+ nameInput.value = profileTitle.textContent;
+ jobInput.value = profileDescription.textContent;
 })
 
 // слушатель на открытие новой карточки
@@ -47,11 +49,11 @@ addButton.addEventListener('click', () => {
  openPopup(newCardPopup);
 })
 
-// перебор массива всех попапов
-allPopups.forEach(allPopups => {
- allPopups.addEventListener('click', (event) => {
+// перебор массива всех попапов по оверлею
+allPopups.forEach(popup => {
+ popup.addEventListener('click', (event) => {
    if (event.target.classList.contains('popup__close') || event.target.classList.contains('popup')) {
-     closePopup(allPopups);
+    closePopupByOverlay(event.currentTarget);
    }
  });
 });
@@ -59,9 +61,7 @@ allPopups.forEach(allPopups => {
 // Закрытие модальных окон нажатием на Esc
 document.addEventListener('keydown', function(event) {
  if (event.key === 'Escape') {
-  allPopups.forEach(allPopups => {
-   closePopup(allPopups);
-  })
+  closePopupByEsc();
  }
 });
 
@@ -74,7 +74,7 @@ const profileDescription = document.querySelector('.profile__description');
 nameInput.value = profileTitle.textContent;
 jobInput.value = profileDescription.textContent;
 
-function handleFormSubmit(evt) {
+function editProfile(evt) {
   evt.preventDefault(); 
   const name = nameInput.value;
   const job = jobInput.value;
@@ -85,7 +85,7 @@ function handleFormSubmit(evt) {
   closePopup(editProfilePopup);
 }
 
-editProfilePopup.addEventListener('submit', handleFormSubmit);
+editProfilePopup.addEventListener('submit', editProfile);
 
 // Добавление карточки
 const newCardName = newCardPopup.querySelector('.popup__input_type_card-name');
