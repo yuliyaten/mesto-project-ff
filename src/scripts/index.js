@@ -1,5 +1,5 @@
 import { initialCards } from './cards.js';
-import { closePopup, openPopup, closePopupByOverlay, closePopupByEsc} from './modal.js';
+import { closePopup, openPopup, closePopupByOverlay} from './modal.js';
 import { createCard, deleteCard, likeCard } from './card.js';
 
 // @todo: DOM узлы
@@ -56,13 +56,6 @@ allPopups.forEach(popup => {
     closePopupByOverlay(event.currentTarget);
    }
  });
-});
-
-// Закрытие модальных окон нажатием на Esc
-document.addEventListener('keydown', function(event) {
- if (event.key === 'Escape') {
-  closePopupByEsc();
- }
 });
 
 // Редактирование имени и информации о себе
