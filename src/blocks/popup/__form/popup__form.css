@@ -1,3 +1,11 @@
 .popup__form {
   margin-top: 27px;
 }
+
+.form__input-error {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14.52px;
+  text-align: left;
+  color: #FF0000;
+}
