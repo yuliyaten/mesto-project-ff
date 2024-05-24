@@ -1,126 +1,92 @@
 // Загрузка информации о пользователе с сервера
-const handleResponse = (response) => {
- if (response.ok) {
-  return response.json();
- }
-}
+const handleResponse = (res) => {
+  if (!res.ok) {
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+  return res.json();
+};
+
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/wff-cohort-15',
+  headers: {
+    authorization: 'b6d33fb2-0adc-40c5-92ff-643651a748db',
+  },
+  headersWithContentType: {
+    authorization: 'b6d33fb2-0adc-40c5-92ff-643651a748db',
+    'Content-Type': 'application/json'
+  }
+};
 
 export const getProfileData = () => {
- return fetch('https://nomoreparties.co/v1/wff-cohort-12/users/me', {
+ return fetch(`${config.baseUrl}/users/me`, {
    method: 'GET',
-   headers: {
-     authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db'
-   }
+   headers: config.headers
  })
  .then(handleResponse)
- .catch(error => {
-  return Promise.reject(`Ошибка: ${error.status}`);
-});
 };
 
 export const getCards = () => {
- return fetch('https://nomoreparties.co/v1/wff-cohort-12/cards', {
- method: 'GET',
- headers: {
-   authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db'
-  },
- })
- .then(handleResponse)
- .catch(error => {
-  return Promise.reject(`Ошибка: ${error.status}`);
-});
+  return fetch(`${config.baseUrl}/cards`, {
+    method: 'GET',
+    headers: config.headers
+  })
+  .then(handleResponse)
 };
 
 export const editProfileData = (nameProfile, aboutProfile) => {
-  return fetch('https://nomoreparties.co/v1/wff-cohort-12/users/me', {
-  method: 'PATCH',
-  headers: {
-   authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db',
-   'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: nameProfile,
-    about: aboutProfile
+  return fetch(`${config.baseUrl}/users/me`, {
+    method: 'PATCH',
+    headers: config.headersWithContentType,
+    body: JSON.stringify({
+      name: nameProfile,
+      about: aboutProfile
+    })
   })
-})
  .then(handleResponse)
- .catch(error => {
-  return Promise.reject(`Ошибка: ${error.status}`);
-});
 };
 
 export const addNewCard = (cardName, imageUrl) => {
-  return fetch('https://nomoreparties.co/v1/wff-cohort-12/cards', {
+  return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
-    headers: {
-      authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db',
-      'Content-Type': 'application/json'
-    },
+    headers: config.headersWithContentType,
     body: JSON.stringify({
       name: cardName,
       link: imageUrl
     }),
   })
   .then(handleResponse)
-  .catch(error => {
-    return Promise.reject(`Ошибка: ${error.status}`);
-  });
 };
 
 export const deleteCards = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-12/cards/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db',
-    },
+    headers: config.headers
   })
   .then(handleResponse)
-  .catch(error => {
-    return Promise.reject(`Ошибка: ${error.status}`);
-  });
-}
+};
 
 export const putLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-12/cards/likes/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: {
-      authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db'
-    },
+    headers: config.headers
   })
   .then(handleResponse)
-  .catch(error => {
-    return Promise.reject(`Ошибка: ${error.status}`);
-  });
 };
 
 export const removeLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-12/cards/likes/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db'
-    },
+    headers: config.headers
   })
   .then(handleResponse)
-  .catch(error => {
-    return Promise.reject(`Ошибка: ${error.status}`);
-  });
 };
 
 export const changeAvatar = (avatar) => {
-  return fetch(`https://nomoreparties.co/v1/wff-cohort-12/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
-    headers: { 
-      authorization: '085c5d26-7525-4380-ab28-1d7ea8f438db',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(avatar)
+    headers: config.headersWithContentType,
+    body: JSON.stringify({ avatar })
   })
   .then(handleResponse)
-  .then(result => {  
-    profileAvatar.style.backgroundImage = `url(${result.avatar})`; 
-  })
-  .catch(error => {
-    return Promise.reject(`Ошибка: ${error.status}`);
-  });
 };
 

@@ -15,13 +15,15 @@
   </header>
   <main class="content">
     <section class="profile page__section">
+      <button class="profile__avatar-button" type="button">
         <div class="profile__image" style="background-image: url(<%=require('./images/avatar.jpg')%>);"></div>
-        <button class="profile__avatar-button" type="button"></button>
+      </button>
       <div class="popup popup_type_avatar popup_is-animated">
         <div class="popup__content">
           <h3 class="popup__title">Обновить аватар</h3>
           <form class="popup__form" name="new-avatar" novalidate>
-            <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на аватар" required>
+            <input type="url" name="link" class="popup__input popup__input_type_url" id="avatar-url" placeholder="Ссылка на аватар" required>
+            <span class="form__input-error avatar-url-error"></span>
             <button type="submit" class="button popup__button">Сохранить</button>
           </form>
         </div>
@@ -61,7 +63,7 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place" novalidate>
-        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" id="place-name_input" placeholder="Название" minlength="2" maxlength="30" required>
+        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" id="place-name_input" placeholder="Название" minlength="2" maxlength="30" pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
         <span class="form__input-error place-name_input-error"></span>
         <input type="url" name="link" class="popup__input popup__input_type_url" id="place-link_input" placeholder="Ссылка на картинку" required>
         <span class="form__input-error place-link_input-error"></span>

@@ -1,5 +1,8 @@
 // Функция, которая добавляет класс с ошибкой
-export const showInputError = (formElement, inputElement, validationConfig, errorMessage) => {
+import { validationConfig } from './index.js';
+
+// Функция, которая показывает класс с ошибкой
+const showInputError = (formElement, inputElement, errorMessage) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
   errorElement.textContent = errorMessage;
@@ -7,75 +10,77 @@ export const showInputError = (formElement, inputElement, validationConfig, erro
 };
 
 // Функция, которая удаляет класс с ошибкой
-
-export const hideInputError = (formElement, inputElement, validationConfig) => {
- const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
- inputElement.classList.remove(validationConfig.inputErrorClass);
- errorElement.classList.remove(validationConfig.errorClass);
- errorElement.textContent = '';
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove(validationConfig.inputErrorClass);
+  errorElement.classList.remove(validationConfig.errorClass);
+  errorElement.textContent = '';
 };
 
 // Функция, которая проверяет валидность поля
-
-export const checkInputValidity = (formElement, inputElement, validationConfig) => {
+const checkInputValidity = (formElement, inputElement) => {
  if (!inputElement.validity.valid) {
-   showInputError(formElement, inputElement, validationConfig, inputElement.validationMessage);
+   showInputError(formElement, inputElement, inputElement.validationMessage);
  } else {
-   hideInputError(formElement, inputElement, validationConfig);
+   hideInputError(formElement, inputElement);
  }
 };
 
-// //Добавление обработчиков всем полям формы
+// Функция, которая делает кнопку неактивной
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    disableButton(buttonElement);
+  } else {
+    enableButton(buttonElement);
+  }
+}
 
-export const setEventListeners = (formElement, validationConfig) => {
+// Функция, которая делает кнопку неактивной
+const disableButton = (buttonElement) => {
+  buttonElement.disabled = true;
+  buttonElement.classList.add(validationConfig.inactiveButtonClass);
+};
+
+// Функция, которая делает кнопку активной
+const enableButton = (buttonElement) => {
+  buttonElement.disabled = false;
+  buttonElement.classList.remove(validationConfig.inactiveButtonClass);
+};
+
+// Функция, которая проверяет input на валидность
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => !inputElement.validity.valid);
+}
+ 
+// //Добавление обработчиков всем полям формы
+const setEventListeners = (formElement) => {
  const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
 
- toggleButtonState(inputList, buttonElement, validationConfig);
+ toggleButtonState(inputList, buttonElement);
 
  inputList.forEach((inputElement) => {
    inputElement.addEventListener('input', () => {
-     checkInputValidity(formElement, inputElement, validationConfig);
-     toggleButtonState(inputList, buttonElement, validationConfig);
+     checkInputValidity(formElement, inputElement);
+     toggleButtonState(inputList, buttonElement);
    });
  });
 };
 
+// Функция для проверки всех форм на валидность
 export const enableValidation = (validationConfig) => {
  const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
  formList.forEach((formElement) => {
- formElement.addEventListener('submit', (evt) => {
-   evt.preventDefault();
- });
-   setEventListeners(formElement, validationConfig);
-}); 
-}
-
-// Функция, которая делает кнопку неактивной
-
-export const toggleButtonState = (inputList, buttonElement, validationConfig) => {
- if (hasInvalidInput(inputList)) {
-   buttonElement.disabled = true;
-   buttonElement.classList.add(validationConfig.inactiveButtonClass);
- } else {
-   buttonElement.disabled = false;
-   buttonElement.classList.remove(validationConfig.inactiveButtonClass);
- }
-}
-
-export const hasInvalidInput = (inputList) => {
- return inputList.some((inputElement) => {
- return !inputElement.validity.valid;
- });
+   setEventListeners(formElement);
+  }); 
 }
 
 // Функция, которая очищает ошибки валидации формы
-
-export const clearValidation = (formElement, validationConfig) => {
- const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector)); 
+export const clearValidation = (formElement) => {
+ const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
  inputList.forEach((inputElement) => {
-   hideInputError(formElement, inputElement, validationConfig);
+   hideInputError(formElement, inputElement);
  });
  const buttonElement = formElement.querySelector(validationConfig.submitButtonSelector);
- buttonElement.classList.add(validationConfig.inactiveButtonClass); 
+ disableButton(buttonElement);
 };
