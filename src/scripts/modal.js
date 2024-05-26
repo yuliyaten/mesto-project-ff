@@ -8,10 +8,6 @@ export function openPopup(popup) {
  document.addEventListener('keydown', closePopupByEscape);
 }
 
-export function closePopupByOverlay(popup) {
- popup.classList.remove('popup_is-opened');
-}
-
 // Закрытие модальных окон нажатием на Esc
 const closePopupByEscape = event => {
  if (event.key === 'Escape') { 

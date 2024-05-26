@@ -27,15 +27,19 @@ export function createCard (card, openImageCard, userId) {
   });
 }
 
- cardImage.addEventListener('click', () => openImageCard(card.link, card.name));
- 
- const likeCounter = cardElement.querySelector('.card__like-counter');
- likeCounter.textContent = card.likes.length;
+cardImage.addEventListener('click', () => openImageCard(card.link, card.name));
 
- // Поставить лайк карточки
- const likeButton = cardElement.querySelector('.card__like-button');
+const likeCounter = cardElement.querySelector('.card__like-counter');
+likeCounter.textContent = card.likes.length;
 
- likeButton.addEventListener('click', (evt) => {
+// Поставить лайк карточки
+const likeButton = cardElement.querySelector('.card__like-button');
+
+if (card.likes.some(like => like._id === userId)) {
+  likeButton.classList.add('card__like-button_is-active');
+}
+
+likeButton.addEventListener('click', (evt) => {
   const isLiked = evt.target.classList.contains('card__like-button_is-active');
   
   if (isLiked) {

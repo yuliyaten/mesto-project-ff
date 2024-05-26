@@ -50,9 +50,9 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form class="popup__form" name="edit-profile" novalidate>
-        <input type="text" name="name" class="popup__input popup__input_type_name" id="name_input" placeholder="Имя" minlength="2" maxlength="40" pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
+        <input type="text" name="name" class="popup__input popup__input_type_name" id="name_input" placeholder="Имя" minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="form__input-error name_input-error"></span>
-        <input type="text" name="description" class="popup__input popup__input_type_description" id="description_input" placeholder="Занятие" minlength="2" maxlength="200" pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
+        <input type="text" name="description" class="popup__input popup__input_type_description" id="description_input" placeholder="Занятие" minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="form__input-error description_input-error"></span>
         <button disabled type="submit" class="button popup__button">Сохранить</button>
       </form>
@@ -63,7 +63,7 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place" novalidate>
-        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" id="place-name_input" placeholder="Название" minlength="2" maxlength="30" pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
+        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" id="place-name_input" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" required data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="form__input-error place-name_input-error"></span>
         <input type="url" name="link" class="popup__input popup__input_type_url" id="place-link_input" placeholder="Ссылка на картинку" required>
         <span class="form__input-error place-link_input-error"></span>
